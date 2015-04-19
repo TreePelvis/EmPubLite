@@ -39,3 +39,21 @@ category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:16:17
 	android:name
 		ADDED from AndroidManifest.xml:16:27
+supports-screens
+ADDED from AndroidManifest.xml:21:5
+	android:largeScreens
+		ADDED from AndroidManifest.xml:22:9
+	android:normalScreens
+		ADDED from AndroidManifest.xml:23:9
+	android:xlargeScreens
+		ADDED from AndroidManifest.xml:25:9
+	android:smallScreens
+		ADDED from AndroidManifest.xml:24:9
+uses-sdk
+INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
+	android:targetSdkVersion
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	android:minSdkVersion
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
