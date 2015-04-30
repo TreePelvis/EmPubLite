@@ -2,7 +2,9 @@
 <resources>
     <!-- From: file:/E:/Programming%20Books/Commonsware/Source%20Code/EmPubLite/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="about">About</string>
     <string name="app_name">EmPub Lite</string>
+    <string name="help">Help</string>
     <!-- From: file:/E:/Programming%20Books/Commonsware/Source%20Code/EmPubLite/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
