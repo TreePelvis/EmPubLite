@@ -23,7 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SimpleContentActivity" >
+            android:name=".SimpleContentActivity">
+        </activity>
+        <activity
+            android:name=".Preferences">
+        </activity>
+        <activity
+            android:name=".NoteActivity">
         </activity>
     </application>
 

@@ -4,7 +4,19 @@
     <eat-comment/>
     <string name="about">About</string>
     <string name="app_name">EmPub Lite</string>
+    <string name="delete">Delete</string>
     <string name="help">Help</string>
+    <string name="hint">Enter notes here</string>
+    <string name="keepscreenon_summary">Keep the screen powered on while the reader is
+        in the foreground</string>
+    <string name="keepscreenon_title">Keep Screen On</string>
+    <string name="lastpositionsummary">Save the last chapter you were viewing and open
+        up on that chapter when re-opening the app</string>
+    <string name="lastpositiontitle">Save Last Position</string>
+    <string name="notes">Notes</string>
+    <string name="prefdesc">Settings for use of EmPubLite</string>
+    <string name="preftitle">Display and Navigation</string>
+    <string name="settings">Settings</string>
     <!-- From: file:/E:/Programming%20Books/Commonsware/Source%20Code/EmPubLite/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
