@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,9 +31,17 @@ public class ModelFragment extends Fragment {
     @Override
     public void onAttach(Activity host) {
         super.onAttach(host);
+
+        EventBus.getDefault().register(this);
         if (contents == null) {
             new LoadThread(host).start();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        EventBus.getDefault().unregister(this);
+        super.onDetach();
     }
 
     public BookContents getBook() {
@@ -48,21 +58,41 @@ public class ModelFragment extends Fragment {
 
         @Override
         public void run() {
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             prefs = PreferenceManager.getDefaultSharedPreferences(ctxt);
 
-            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             Gson gson = new Gson();
+            File baseDir = new File(ctxt.getFilesDir(), DownloadCheckService.UPDATE_BASEDIR);
 
             try {
-                InputStream is = ctxt.getAssets().open("book/contents.json");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                InputStream is;
 
+                if(baseDir.exists()) {
+                    is = new FileInputStream(new File(baseDir, "contents.json"));
+                }
+                else {
+                    is = ctxt.getAssets().open("book/contents.json");
+                }
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 contents = gson.fromJson(reader, BookContents.class);
+                is.close();
+
+                if(baseDir.exists()) {
+                    contents.setBaseDir(baseDir);
+                }
+
                 EventBus.getDefault().post(new BookLoadedEvent(contents));
             }
             catch (IOException e) {
                 Log.e(getClass().getSimpleName(), "Exception pasing JSON", e);
             }
+        }
+    }
+
+    public void onEventBackgroundThread(BookUpdatedEvent event) {
+        if(getActivity() != null) {
+            new LoadThread(getActivity()).start();
         }
     }
 
