@@ -18,5 +18,7 @@
     <string name="delete">Delete</string>
     <string name="share">Share</string>
     <string name="download_update">Download Update</string>
+    <string name="update_desc">Click</string>
+    <string name="update_complete">EmPub</string>
 
 </resources>

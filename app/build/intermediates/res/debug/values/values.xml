@@ -19,6 +19,8 @@
     <string name="preftitle">Display and Navigation</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
+    <string name="update_complete">EmPub</string>
+    <string name="update_desc">Click</string>
     <!-- From: file:/E:/Programming%20Books/Commonsware/Source%20Code/EmPubLite/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">

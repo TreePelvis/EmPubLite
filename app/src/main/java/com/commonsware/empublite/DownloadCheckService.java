@@ -1,7 +1,11 @@
 package com.commonsware.empublite;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -19,6 +23,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.NoSubscriberEvent;
 import retrofit.RestAdapter;
 
 
@@ -28,6 +33,7 @@ public class DownloadCheckService extends com.commonsware.cwac.wakeful.WakefulIn
     private static final String OUR_BOOK_DATE = "20120418";
     private static final String UPDATE_FILENAME = "book.zip";
     public static final String UPDATE_BASEDIR = "updates";
+    private static final int NOTIFY_ID = 1337;
 
     public DownloadCheckService() {
         super("DownloadCheckService");
@@ -45,7 +51,10 @@ public class DownloadCheckService extends com.commonsware.cwac.wakeful.WakefulIn
                 updateDir.mkdir();
                 unzip(book, updateDir);
                 book.delete();
+
+                EventBus.getDefault().register(this);
                 EventBus.getDefault().post(new BookUpdatedEvent());
+                EventBus.getDefault().unregister(this);
             }
         }
         catch (Exception e) {
@@ -64,7 +73,7 @@ public class DownloadCheckService extends com.commonsware.cwac.wakeful.WakefulIn
         return (null);
     }
 
-    private File download(String url) throws MalformedURLException, IOException {
+    private File download(String url) throws IOException {
         File output = new File(getFilesDir(), UPDATE_FILENAME);
 
         if(output.exists()) {
@@ -78,7 +87,7 @@ public class DownloadCheckService extends com.commonsware.cwac.wakeful.WakefulIn
         try {
             InputStream in = c.getInputStream();
             byte[] buffer = new byte[16384];
-            int len = 0;
+            int len;
 
             while((len = in.read(buffer)) > 0) {
                 out.write(buffer, 0, len);
@@ -119,5 +128,20 @@ public class DownloadCheckService extends com.commonsware.cwac.wakeful.WakefulIn
             zis.closeEntry();
         }
         zis.close();
+    }
+
+    public void onEvent(NoSubscriberEvent event) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        Intent toLaunch = new Intent(this, EmPubLiteActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, toLaunch, 0);
+
+        builder.setAutoCancel(true).setContentIntent(pi)
+                .setContentTitle(getString(R.string.update_complete))
+                .setContentText(getString(R.string.update_desc))
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setTicker(getString(R.string.update_complete));
+
+        NotificationManager mgr = ((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
+        mgr.notify(NOTIFY_ID, builder.build());
     }
 }
